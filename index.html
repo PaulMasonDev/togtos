@@ -8,6 +8,44 @@
     <link rel="stylesheet" href="./styles/global.css" />
   </head>
   <body>
-    <h1>TogTos</h1>
+    <main>
+      <div id="title">
+        <h1>TogTos</h1>
+        <p><em>That one guy from that one show</em></p>
+      </div>
+      <hr />
+      <div id="search">
+        <form id="search-form">
+          <div id="search-inputs">
+            <input type="text" placeholder="Enter show title" />
+            <input type="text" placeholder="Enter character name" />
+          </div>
+          <input type="submit" value="GO" />
+        </form>
+      </div>
+      <hr />
+      <div id="info-display">
+        <div id="character">
+          <h3>Character Name Here</h3>
+        </div>
+        <h4>is portrayed by</h4>
+        <div id="actor">
+          <img src="./assets/empty-profile.svg" height="150" width="150" />
+          <h3>Actor Name Here</h3>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div id="attribution">
+        <p id="powered-by">Powered by</p>
+        <img src="./assets/tmdb-logo.svg" width="50" />
+        <p>
+          This product uses the TMDB API but is not endorsed or certified by
+          TMDB.
+        </p>
+        <p>&copy;2022 Paul Mason</p>
+      </div>
+    </footer>
   </body>
+  <script src="./scripts/form.js"></script>
 </html>
