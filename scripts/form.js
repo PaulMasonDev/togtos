@@ -9,7 +9,16 @@ const getShowId = async (showTitle) => {
   const searchShowUrl = `https://api.themoviedb.org/3/search/tv?api_key=${TMDB_API_KEY}&language=en-US&page=1&query=${showTitle}&include_adult=false`;
   const showResponse = await fetch(searchShowUrl);
   const showData = await showResponse.json();
-  return showData.results[0].id;
+  // const showTitleDisplay = document.getElementById("show-title");
+  // showTitleDisplay.innerText = showData.results[0].name;
+  console.log({ showData });
+  if (showData.results.length > 0) {
+    return {
+      tvShowId: showData.results[0].id,
+      showTitle: showData.results[0].name,
+    };
+  }
+  return null;
 };
 
 const getCastData = async (tvShowId) => {
@@ -48,10 +57,10 @@ const searchCastList = (castList) => {
     }
   });
   if (foundCast) return foundCast;
-  return "None found";
+  return null;
 };
 
-const formatCastMember = (castMember) => {
+const formatCastMember = (castMember, showTitle) => {
   let formattedCastMember = {
     ...castMember,
     characterNames: [
@@ -59,8 +68,20 @@ const formatCastMember = (castMember) => {
         titleCaseString(character)
       ),
     ],
+    showTitle,
   };
   return formattedCastMember;
+};
+
+const sendToDisplay = (character) => {
+  const characterName = document.getElementById("character-name");
+  const showTitle = document.getElementById("show-title");
+  const actorImg = document.getElementById("actor-img");
+  const actorName = document.getElementById("actor-name");
+  characterName.innerText = character.characterNames[0];
+  showTitle.innerText = character.showTitle;
+  actorImg.src = character.imageUrl;
+  actorName.innerText = character.actorName;
 };
 
 const handleFormSubmit = async (event) => {
@@ -68,11 +89,25 @@ const handleFormSubmit = async (event) => {
   const showTitleInputValue = document
     .getElementById("show-title-input")
     .value.toLowerCase();
-  const tvShowId = await getShowId(showTitleInputValue);
+  if (showTitleInputValue === "") {
+    nullResults();
+    return;
+  }
+  const showIdResults = await getShowId(showTitleInputValue);
+  if (showIdResults == null) {
+    nullResults();
+    return;
+  }
+  const { tvShowId, showTitle } = showIdResults;
   const castData = await getCastData(tvShowId);
   const castList = generateCastList(castData.cast);
   const foundCastMember = searchCastList(castList);
-  const formattedCastMember = formatCastMember(foundCastMember);
+  if (foundCastMember == null) {
+    nullResults();
+    return;
+  }
+  const formattedCastMember = formatCastMember(foundCastMember, showTitle);
+  sendToDisplay(formattedCastMember);
   console.log({
     tvShowId,
     castData,
@@ -80,6 +115,27 @@ const handleFormSubmit = async (event) => {
     foundCastMember,
     formattedCastMember,
   });
+};
+
+const displayResultsNotFoundMessage = (show, character) => {
+  const nullValue = "<nothing entered>";
+  alert(
+    `Sorry, no results found for your show search of ${
+      show ? show : nullValue
+    } and/or your character search of ${character ? character : nullValue}`
+  );
+  document.getElementById("show-title-input").value = "";
+  document.getElementById("character-input").value = "";
+};
+
+const nullResults = () => {
+  const showTitleInputValue = document
+    .getElementById("show-title-input")
+    .value.toLowerCase();
+  const characterInputValue = document
+    .getElementById("character-input")
+    .value.toLowerCase();
+  displayResultsNotFoundMessage(showTitleInputValue, characterInputValue);
 };
 
 form.addEventListener("submit", handleFormSubmit);

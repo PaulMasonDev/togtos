@@ -28,18 +28,24 @@
               placeholder="Enter character name"
             />
           </div>
-          <input type="submit" value="GO" />
+          <input id="submit" type="submit" value="GO" />
         </form>
       </div>
       <hr />
       <div id="info-display">
         <div id="character">
-          <h3>Character Name Here</h3>
+          <h3 id="character-name">Character Name Here</h3>
         </div>
-        <h4>is portrayed by</h4>
+        <h4>from <span id="show-title">show title</span></h4>
+        <h5>is portrayed by</h5>
         <div id="actor">
-          <img src="./assets/empty-profile.svg" height="150" width="150" />
-          <h3>Actor Name Here</h3>
+          <img
+            id="actor-img"
+            src="./assets/empty-profile.svg"
+            height="450"
+            width="300"
+          />
+          <h3 id="actor-name">Actor Name Here</h3>
         </div>
       </div>
     </main>
@@ -62,4 +68,5 @@
   <script src="./scripts/apikey.js" type="module"></script>
   <script src="./scripts/form.js" type="module"></script>
   <script src="./scripts/utils.js" type="module"></script>
+  <script src="./scripts/validations.js" type="module"></script>
 </html>
