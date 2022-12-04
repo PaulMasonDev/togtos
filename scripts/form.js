@@ -122,7 +122,9 @@ const displayResultsNotFoundMessage = (show, character) => {
   alert(
     `Sorry, no results found for your show search of ${
       show ? show : nullValue
-    } and/or your character search of ${character ? character : nullValue}`
+    } and/or your character search of ${
+      character ? character : nullValue
+    }. Please double check your spelling.`
   );
   document.getElementById("show-title-input").value = "";
   document.getElementById("character-input").value = "";
