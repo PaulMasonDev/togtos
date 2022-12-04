@@ -9,9 +9,6 @@ const getShowId = async (showTitle) => {
   const searchShowUrl = `https://api.themoviedb.org/3/search/tv?api_key=${TMDB_API_KEY}&language=en-US&page=1&query=${showTitle}&include_adult=false`;
   const showResponse = await fetch(searchShowUrl);
   const showData = await showResponse.json();
-  // const showTitleDisplay = document.getElementById("show-title");
-  // showTitleDisplay.innerText = showData.results[0].name;
-  console.log({ showData });
   if (showData.results.length > 0) {
     return {
       tvShowId: showData.results[0].id,
@@ -108,13 +105,6 @@ const handleFormSubmit = async (event) => {
   }
   const formattedCastMember = formatCastMember(foundCastMember, showTitle);
   sendToDisplay(formattedCastMember);
-  console.log({
-    tvShowId,
-    castData,
-    castList,
-    foundCastMember,
-    formattedCastMember,
-  });
 };
 
 const displayResultsNotFoundMessage = (show, character) => {
