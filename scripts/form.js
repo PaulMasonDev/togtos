@@ -42,7 +42,8 @@ const generateCastList = (cast) => {
 const searchCastList = (castList) => {
   const characterInputValue = document
     .getElementById("character-input")
-    .value.toLowerCase();
+    .value.toLowerCase()
+    .trim();
   const foundCast = castList.find((castMember) => {
     for (const character of castMember.characterNames) {
       if (character === characterInputValue) return true;
@@ -86,7 +87,9 @@ const handleFormSubmit = async (event) => {
   event.preventDefault();
   //GET SHOW LOGIC
   const showTitleInput = document.getElementById("show-title-input");
-  const showIdResults = await getShowId(showTitleInput.value.toLowerCase());
+  const showIdResults = await getShowId(
+    showTitleInput.value.toLowerCase().trim()
+  );
   if (showIdResults == null) {
     displayShowNotFoundMessage(showTitleInput.value);
     return;
