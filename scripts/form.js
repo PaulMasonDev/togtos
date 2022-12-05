@@ -45,6 +45,7 @@ const searchCastList = (castList) => {
     .value.toLowerCase();
   const foundCast = castList.find((castMember) => {
     for (const character of castMember.characterNames) {
+      if (character === characterInputValue) return true;
       const individualNames = character.split(" ");
       for (const name of individualNames) {
         if (name !== "the" && name !== "mr." && name !== "mrs.") {
@@ -83,16 +84,11 @@ const sendToDisplay = (character) => {
 
 const handleFormSubmit = async (event) => {
   event.preventDefault();
-  const showTitleInputValue = document
-    .getElementById("show-title-input")
-    .value.toLowerCase();
-  if (showTitleInputValue === "") {
-    nullResults();
-    return;
-  }
-  const showIdResults = await getShowId(showTitleInputValue);
+  //GET SHOW LOGIC
+  const showTitleInput = document.getElementById("show-title-input");
+  const showIdResults = await getShowId(showTitleInput.value.toLowerCase());
   if (showIdResults == null) {
-    nullResults();
+    displayShowNotFoundMessage(showTitleInput.value);
     return;
   }
   const { tvShowId, showTitle } = showIdResults;
@@ -100,34 +96,23 @@ const handleFormSubmit = async (event) => {
   const castList = generateCastList(castData.cast);
   const foundCastMember = searchCastList(castList);
   if (foundCastMember == null) {
-    nullResults();
+    displayCharacterNotFoundMessage(
+      document.getElementById("character-input").value
+    );
     return;
   }
   const formattedCastMember = formatCastMember(foundCastMember, showTitle);
   sendToDisplay(formattedCastMember);
 };
 
-const displayResultsNotFoundMessage = (show, character) => {
-  const nullValue = "<nothing entered>";
-  alert(
-    `Sorry, no results found for your show search of ${
-      show ? show : nullValue
-    } and/or your character search of ${
-      character ? character : nullValue
-    }. Please double check your spelling.`
-  );
-  document.getElementById("show-title-input").value = "";
-  document.getElementById("character-input").value = "";
+const displayShowNotFoundMessage = (show) => {
+  alert(`Sorry, no results found for your search of "${show}".`);
+  document.getElementById("show-title-input").focus();
 };
 
-const nullResults = () => {
-  const showTitleInputValue = document
-    .getElementById("show-title-input")
-    .value.toLowerCase();
-  const characterInputValue = document
-    .getElementById("character-input")
-    .value.toLowerCase();
-  displayResultsNotFoundMessage(showTitleInputValue, characterInputValue);
+const displayCharacterNotFoundMessage = (character) => {
+  alert(`Sorry, no results found for your search of "${character}".`);
+  document.getElementById("show-title-input").focus();
 };
 
 form.addEventListener("submit", handleFormSubmit);
